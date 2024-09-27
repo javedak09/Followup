@@ -1,20 +1,15 @@
 import 'package:followup/DBOperations/DBProvider.dart';
 import 'package:followup/WebApi/SyncData.dart';
-import 'package:sqflite/sqflite.dart';
-
-import '../Model/DeviceInformation.dart';
-import '../Widget/Message.dart';
-import 'DeviceInformationController.dart';
+import 'package:intl/intl.dart';
 
 class LoginController {
   Future<String?> downloadUsers() async {
     try {
       List<dynamic> lst =
           await SyncData().downloadData("api/Login/downloadUsers_Json");
-      Database db = await DBProvider().initDb();
+      var db = await DBProvider().db;
 
       int index = 0;
-
 
       for (var item in lst) {
         Map<String, dynamic> map_users = {
@@ -26,7 +21,7 @@ class LoginController {
           "imei": lst[index]["imei"],
         };
         index++;
-        int i = await db.insert("users", map_users);
+        int i = await db!.insert("users", map_users);
 
         return "Data downloaded successfully";
       }
@@ -38,7 +33,7 @@ class LoginController {
 
   Future<String?> Authenticate(String userid, String passwd) async {
     try {
-      Database? db = await DBProvider().initDb();
+      var db = await DBProvider().db;
 
       List<Map<String, dynamic>> lst = await db!.query(
         "users",
@@ -52,6 +47,27 @@ class LoginController {
       } else {
         return "Login Successfully";
       }
+    } catch (e) {
+      print(e.toString());
+      return e.toString();
+    }
+  }
+
+  Future<String?> userLog(
+      String? userid, String? imei, String? loginstatus) async {
+    try {
+      var db = await DBProvider().db;
+
+      String mydt = DateFormat("dd/MM/yyyy HH:mm:ss").format(DateTime.now());
+
+      Map<String, dynamic> lst = {
+        "userid": userid,
+        "entrydate": mydt,
+        "imei": imei,
+        "loginstatus": loginstatus,
+      };
+
+      int? a = await db!.insert("userslog", lst);
     } catch (e) {
       print(e.toString());
       return e.toString();

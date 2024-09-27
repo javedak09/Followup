@@ -41,10 +41,21 @@ class LoginPageState extends State<LoginPage> {
     String? str = await LoginController()
         .Authenticate(usernmeController.text, passwdController.text);
     if (str == "Login Successfully") {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SampleEntry()));
+      str = await LoginController().userLog(usernmeController.text, "", "s");
+
+      if (str != "" && str != null) {
+        CustomAlertDialog.ShowAlertDialog(context, str.toString());
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SampleEntry()));
+      }
     } else {
       CustomAlertDialog.ShowAlertDialog(context, str.toString());
+      str = await LoginController().userLog(usernmeController.text, "", "f");
+
+      if (str != "" && str != null) {
+        CustomAlertDialog.ShowAlertDialog(context, str.toString());
+      }
     }
   }
 

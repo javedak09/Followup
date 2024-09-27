@@ -47,7 +47,23 @@ class DBProvider {
     await db.execute("CREATE TABLE IF NOT EXISTS userslog ("
         "id INTEGER PRIMARY KEY,"
         "userid TEXT,"
-        "entrydate TEXT"
+        "entrydate TEXT,"
+        "imei TEXT,"
+        "loginstatus TEXT"
+        ");");
+
+    await db.execute("CREATE TABLE IF NOT EXISTS followups ("
+        "id INTEGER PRIMARY KEY,"
+        "childid TEXT,"
+        "vdt TEXT,"
+        "visitno TEXT,"
+        "status TEXT,"
+        "syncdate TEXT,"
+        "syncstatus TEXT,"
+        "userid TEXT,"
+        "entrydate TEXT,"
+        "downloaddt TEXT,"
+        "appver TEXT"
         ");");
   }
 }

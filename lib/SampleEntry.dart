@@ -1,3 +1,4 @@
+import 'package:followup/Controller/FollowupController.dart';
 import 'package:followup/LoginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,12 @@ class SampleEntryState extends State<SampleEntry> {
           title: Text("Sample Inventory"),
           backgroundColor: Colors.purple,
           actions: [
+            IconButton(
+              onPressed: () {
+                FollowupController().downloadFollowups();
+              },
+              icon: Icon(Icons.download),
+            ),
             IconButton(
               onPressed: () => {
                 Navigator.push(
